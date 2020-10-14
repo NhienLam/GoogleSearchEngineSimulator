@@ -1,4 +1,4 @@
-# SearchEngineSimulator
+# GoogleSearchEngineSimulator
 A micro version of Google Search Engine Simulator
 
 # What I Learned
