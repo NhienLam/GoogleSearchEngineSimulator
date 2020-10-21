@@ -47,8 +47,6 @@ public class WebCrawler {
 		}
 		System.out.println(String.format("**Done** Visited %s web page(s)", urls.size()));
 
-		System.out.println(" \nHere are the first 30 URL links: \n");
-
 	}
 
 	// The method will use pattern and matcher to extract the domain
