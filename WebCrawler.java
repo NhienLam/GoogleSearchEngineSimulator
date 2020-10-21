@@ -13,11 +13,6 @@ import org.jsoup.select.Elements;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Web Crawler searches for the keyword on internet to generate a list of web url links
- * @author Mike Wu
- *
- */
 public class WebCrawler {
 
 	private String url;
@@ -59,10 +54,17 @@ public class WebCrawler {
 	// The method will use pattern and matcher to extract the domain
 	public String getDomainName(String url) {
 		matcher = patternDomainName.matcher(url);
-		if (url.startsWith("/url?q=https://")) {
-			return url.substring(15, 42);
+		
+		// modify the url string for a better format
+		if (url.startsWith("/url?q=https://")) 
+		{
+			return url.substring(15, url.indexOf("&sa="));
+
 		}
-		return url.substring(14, 42);
+		else
+		{
+			return url.substring(14, 42);
+		}
 	}
 
 	// get the set of urls result
@@ -113,5 +115,15 @@ public class WebCrawler {
 		return bodyText.toLowerCase().contains(searchWord.toLowerCase());
 	}
 
+	public static void main(String[] args)
+	{
+		WebCrawler wc = new WebCrawler("computer");
+		wc.search();
+
+		for(String s : wc.getUrls())
+		{
+			System.out.println(s);
+		}
+	}
 }//end
 
