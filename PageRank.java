@@ -13,7 +13,7 @@ public class PageRank {
 	// How long the web page has existed
 	public int age;
 
-	// The number of other web pages that link to the page in question
+	// The number of other web pages that link to the page 
 	public int otherWebLinks;
 	
 	// How much the webpage owner has paid to Google for advertisement purpose
@@ -29,11 +29,11 @@ public class PageRank {
 	 * @param numOfLinks
 	 * @param money
 	 */
-	public PageRank(int frequency, int age, int numOfLinks, int money)
+	public PageRank(int frequency, int age, int otherWebLinks, int money)
 	{
 		this.frequency = frequency;
 		this.age = age;
-		this.otherWebLinks = numOfLinks;
+		this.otherWebLinks = otherWebLinks;
 		this.money = money;
 		getTotalScore();
 	}
@@ -50,7 +50,10 @@ public class PageRank {
 		getTotalScore();
 	}
 	
-	
+	/**
+	 * Returns the sum of all four factors
+	 * @return sum of all four factors
+	 */
 	public int getTotalScore()
 	{
 		return totalScore = frequency + age + otherWebLinks + money;
