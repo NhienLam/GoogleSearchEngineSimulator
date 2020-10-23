@@ -1,14 +1,22 @@
 package searchengine;
 
+import java.util.ArrayList;
+
 /**
  * The Heap Sort algorithm
  * @author Nhien (Ricky) Lam 
  *
  */
+
 public class HeapSort {
 	
 	// size of the heap
 	private int heapsize;
+	
+	public int getHeapSize()
+	{
+		return heapsize;
+	}
 	
 	/**
 	 * Returns the left child of the target node
@@ -130,7 +138,7 @@ public class HeapSort {
 	
 	/**
 	 * Increases the value of element i's key to the new
-	 * value k, where k >= x's current key value
+	 * value k, where k >= i's current key value
 	 * @param A array A
 	 * @param i the index of the target element in array A
 	 * @param key a new key
@@ -143,7 +151,7 @@ public class HeapSort {
 		}
 		
 		A[i] = key;
-		while(i > 1 && A[getParent(i)] < A[i])
+		while(i > 0 && A[getParent(i)] < A[i])
 		{
 			// swap A[i] with A[getParent(i)]
 			int temp = A[i];
@@ -156,7 +164,7 @@ public class HeapSort {
 	
 	/**
 	 * Inserts the element key into array A
-	 * @param A A array A
+	 * @param A array A
 	 * @param key the inserted key 
 	 */
 	public void MaxHeapInsert(int A[], int key)
@@ -187,7 +195,7 @@ public class HeapSort {
 	
 	public static void main(String[] args)
 	{
-		int[] a = {9,8,7,6,1,2,4,5,10,3, 5};
+		int[] a = {9,8,7,6,1,2,4,5,10,3};
 		HeapSort gg = new HeapSort();
 
 		gg.Heapsort(a);
@@ -197,5 +205,12 @@ public class HeapSort {
             System.out.print(a[i]+" "); 	
          }
 		System.out.println();
+		
+		gg.MaxHeapInsert(a, 5);
+		System.out.println("heapmaximum" + gg.HeapMaximum(a));
+		for (int i=0; i<a.length; ++i) 
+		{
+            System.out.print(a[i]+" "); 	
+        }
 	}
 }
