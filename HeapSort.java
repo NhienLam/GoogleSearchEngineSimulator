@@ -10,9 +10,13 @@ import java.util.ArrayList;
 
 public class HeapSort {
 	
-	// size of the heap
+	// size of the Heap
 	private int heapsize;
 	
+	/**
+	 * Gets the size of the Heap
+	 * @return the size of the Heap
+	 */
 	public int getHeapSize()
 	{
 		return heapsize;
@@ -127,7 +131,7 @@ public class HeapSort {
 	
 	
 	/**
-	 * Returns the element of array A with the largest key.
+	 * Returns the element of array A with the largest key
 	 * @param A array A
 	 * @return the element of array A with the largest key.
 	 */
@@ -191,26 +195,5 @@ public class HeapSort {
 		this.heapsize--;
 		MaxHeapify(A, 0);
 		return max;
-	}
-	
-	public static void main(String[] args)
-	{
-		int[] a = {9,8,7,6,1,2,4,5,10,3};
-		HeapSort gg = new HeapSort();
-
-		gg.Heapsort(a);
-		
-		for (int i=0; i<a.length; ++i) 
-		{
-            System.out.print(a[i]+" "); 	
-         }
-		System.out.println();
-		
-		gg.MaxHeapInsert(a, 5);
-		System.out.println("heapmaximum" + gg.HeapMaximum(a));
-		for (int i=0; i<a.length; ++i) 
-		{
-            System.out.print(a[i]+" "); 	
-        }
 	}
 }
