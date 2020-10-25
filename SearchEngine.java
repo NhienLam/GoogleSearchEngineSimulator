@@ -38,6 +38,9 @@ public class SearchEngine {
 	// A list of websites stored in the Heap
 	private ArrayList<WebLink> webHeap;
 	
+	/**
+	 * No-arg constructor that initialize its instance variables.
+	 */
 	public SearchEngine()
 	{
 		userAssignedWebList = new ArrayList<>();
@@ -62,7 +65,7 @@ public class SearchEngine {
 	}
 	
 	/**
-	 * Reverse the order of the Array
+	 * Reverses the order of the Array
 	 * @param arr the array needs to be inverted
 	 */
 	public void reverseArr(int[] arr)
@@ -89,23 +92,14 @@ public class SearchEngine {
 		}
 	}
 	
-	
+	/**
+	 * Updates the webHeap ArrayList
+	 * @return
+	 */
 	public ArrayList<WebLink> updateWebHeap()
 	{
 		// Creates a new ArrayList<WebLink> that is a copy of the webHeap 
 		ArrayList<WebLink> tempList = new ArrayList<>(webHeap);
-		
-//		System.out.println("UPDATEWEBHEAP ORIGINAL webheap LISTTTTTTTTTTTTTTTTTT");
-//		for(WebLink www : webHeap)
-//		{
-//			System.out.println(www);
-//		}
-//		
-//		System.out.println("UPDATEWEBHEAP ORIGINAL tempList LISTTTTTTTTTTTTTTTTTT");
-//		for(WebLink www : tempList)
-//		{
-//			System.out.println(www);
-//		}
 		
 		// Creates a new array and
 		// Copies all the elements (EXCEPT 0) in the Heap Array to the new array 
@@ -118,39 +112,20 @@ public class SearchEngine {
 				tempArrSize++;
 			}
 		}
-//		
-//		System.out.println("UPDATEWEBHEAP ORIGINAL ARRRRRRRRRRRRRRRRRR");
+
 		int[] tempArr = new int[tempArrSize]; 
 		for (int i = 0; i < tempArrSize; i++)
 		{
 			tempArr[i] = heap[i]; // copy all the non-0 elements in the Heap to tempArr
-//			System.out.println(tempArr[i]);
 		}
 		
 		sorter.Heapsort(tempArr);
 		// reverse the array
 		reverseArr(tempArr);
 		sorter.BuildMaxHeap(heap);  // reset the heap size
-
-//		System.out.println("UPDATEWEBHEAP TEMP ARRRRRRRRRRRRRRRRRR");
-//		for (int i = 0; i < tempArrSize; i++)
-//		{
-//			System.out.println(tempArr[i]);
-//		}
 		
 		// Create another ArrayList that add all the elements in tempList but in the tempArr's order
 		ArrayList<WebLink> updatedHeap = new ArrayList<>();
-//		for (int i = 0; i < tempArr.length; i++)
-//		{
-//			for (int j = 0; j < tempList.size(); j++)
-//			{
-//				if (heap[i] == tempList.get(j).getTotal())
-//				{
-//					updatedHeap.add(new WebLink(tempList.get(j).getUrl(), tempList.get(j).getRank()));
-//					tempList.remove(j);
-//				}
-//			}
-//		}
 		
 		for(int i = 0 ; i < tempArr.length; i++)
 		{
@@ -167,14 +142,8 @@ public class SearchEngine {
 			}
 		}
 
-//		System.out.println("UPDATEWEBHEAP UPDATEWEBHEAP LISTTTTTTTTTTTTTTTTTT");
-//		for(WebLink www : updatedHeap)
-//		{
-//			System.out.println(www);
-//		}
 		return updatedHeap;
-	}
-	
+	}	
 	
 	/**
 	 * Starts the SearchEngine tasks
@@ -183,9 +152,6 @@ public class SearchEngine {
 	{
 		// get input from user
 		Scanner in = new Scanner(System.in);
-
-		// valid input options
-		String validInput = "s";
 		
 		// when to stop the program
 		boolean quit = false;
@@ -198,8 +164,10 @@ public class SearchEngine {
 		System.out.println("Please enter a keyword you want to search?");
 		String keyword = in.nextLine();
 		System.out.println("keyword = "+ keyword);
+		
+		// initializes wCrawler with the keyword
 		wCrawler = new WebCrawler(keyword);
-		wCrawler.search();
+		wCrawler.search(); // start searching
 
 		// A list of the first 30 URL links
 		webList30 = new ArrayList<>();
@@ -217,14 +185,17 @@ public class SearchEngine {
 		}
 		
 		// lets user choose which tasks to perform
+		// stops when users choose "Quit"
 		while(!quit)
 		{
+			// List of tasks for users to choose
 			System.out.println("\n****************************************************");
 			System.out.print("What do you want to perform: "  
 					+ "\n" + "Enter 'D' --- Display search results"
 					+ "\n" + "Enter 'A' --- Assign 4 scores for a specific website"
 					+ "\n" + "Enter 'R' --- Assign scores to 30 websites using a random number generator"
 					+ "\n" + "Enter 'S' --- Sort the 30 PageRank scores"
+					+ "\n" + "Enter 'V' --- View the 4 factor scores of each web url link"
 					+ "\n" + "Enter 'P' --- Create a Priority Queue and store the first sorted 20 web url links into Heap"
 					+ "\n" + "Enter 'I' --- Insert a new web url link into Heap"
 					+ "\n" + "Enter 'F' --- View the first ranked web url link"
@@ -237,31 +208,65 @@ public class SearchEngine {
 			
 			switch(inputOption)
 			{	
+				//Display search results
 				case "D":
-					System.out.println(" \nHere are the first 30 URL links: \n");
+					System.out.println("\nHere are the first 30 URL links: ");
 					for(int i = 0; i < webList30.size(); i++)
 					{
 						System.out.println(i+1 + ".  " + webList30.get(i));
 					}
 					break;
 				
-				// still need to check for invalid score input
+				// Assign 4 scores for a specific website
 				case "A" :
 					// Get input from user
 					System.out.println("Enter a website URL you want to score:   ");
 					String url = in.nextLine();
+					
 					System.out.print("Enter a score for Frequency (1-100):  ");
 					int frequency = in.nextInt();
+					// Check if the scores are valid
+					while(!(frequency >= 1 && frequency <= 100))
+					{
+						System.out.println("Invalid input! Please enter an INTEGER from 1 to 100!");
+						System.out.print("Enter a score for Frequency (1-100):  ");
+						frequency = in.nextInt();
+					}
+					
 					System.out.print("Enter a score for Age (1-100):  ");
 					int age = in.nextInt();
+					// Check if the scores are valid
+					while(!(age >= 1 && age <= 100))
+					{
+						System.out.println("Invalid input! Please enter an INTEGER from 1 to 100!");
+						System.out.print("Enter a score for Age (1-100):  ");
+						age = in.nextInt();
+					}
+					
 					System.out.print("Enter a score for Number of other web pages link to the page (1-100):  ");
 					int numOfLinks = in.nextInt();
+					// Check if the scores are valid
+					while(!(numOfLinks >= 1 && numOfLinks <= 100))
+					{
+						System.out.println("Invalid input! Please enter an INTEGER from 1 to 100!");
+						System.out.print("Enter a score for Number of other web pages link to the pagey (1-100):  ");
+						numOfLinks = in.nextInt();
+					}
+					
 					System.out.print("Enter a score for Money (1-100):  ");
 					int money = in.nextInt();
+					// Check if the scores are valid
+					while(!(money >= 1 && money <= 100))
+					{
+						System.out.println("Invalid input! Please enter an INTEGER from 1 to 100!");
+						System.out.print("Enter a score for Money (1-100):  ");
+						money = in.nextInt();
+					}	
 					
 					in.nextLine(); // skip one line
-					
+									
 					WebLink w = rankedWeb(url,frequency, age, numOfLinks, money);
+					System.out.println("\nHere are the scores you assigned for:");
 					System.out.println("\n->  " + w);
 					System.out.println("Frequecy        = " + w.getFrequency());
 					System.out.println("Age             = " + w.getAge());
@@ -273,19 +278,21 @@ public class SearchEngine {
 					// Add a WebLink contains the URL and the PageRank scores too webList
 					userAssignedWebList.add(w) ;
 	                break;
-	                
+	             
+	            // Assign scores to 30 websites using a random number generator
 				case "R" :
 					for(String s : webList30)
 					{
 						WebLink web = new WebLink(s,new PageRank());
 						randomAssignedWebList.add(web);
 					}
-					for(WebLink wee : randomAssignedWebList)
+					for(int i = 0; i < randomAssignedWebList.size(); i++)
 					{
-						System.out.println(wee);
+						System.out.println(i+1 + "  " + randomAssignedWebList.get(i));
 					}
 					break;
 				
+				// Sort the 30 PageRank scores
 				case "S" :
 					// Checks if randomAssignedWebList is empty
 					if(randomAssignedWebList.isEmpty())
@@ -305,7 +312,7 @@ public class SearchEngine {
 						// reverse the array
 						reverseArr(pRankArr);
 
-						System.out.println("Here are the sorted 30 URL links: ");
+						System.out.println("\nHere are the sorted 30 URL links: ");
 						
 						// Add WebLink to sortedWebList list in an order of pRankArr (descending sorted order)
 						for(int i = 0 ; i < pRankArr.length; i++)
@@ -326,15 +333,34 @@ public class SearchEngine {
 						// print the sorted list
 						for(int swl = 0; swl < sortedWebList.size(); swl++)
 						{
-							System.out.println(swl+1 + "  "+sortedWebList.get(swl));
+							System.out.println(swl+1 + "  "+ sortedWebList.get(swl));
 						}
 					}
 					break;
 				
+				// View the 4 factor scores of each web url link
+				case "V" :
+					// Checks if sortedWebList is empty
+					if(sortedWebList.isEmpty())
+					{
+						System.out.println("You haven't sorted the websites! Enter 'S' to Sort.");	
+					}
+					else
+					{
+						for(int swl = 0; swl < sortedWebList.size(); swl++)
+						{
+							System.out.println(swl+1 + "  " + sortedWebList.get(swl) + " | Frequency score: " +sortedWebList.get(swl).getFrequency()
+									+ " | Age score: " + sortedWebList.get(swl).getAge()
+									+ " | Number of other web pages that link to the page score: " +sortedWebList.get(swl).getOtherWebLinks()
+									+ " | Money score: " + sortedWebList.get(swl).getMoney());
+						}
+					}
+					break;
+					
 				// Creates a Heap priority queue
 				// Stores the first sorted 20 out of 30 web url links into Heap
 				case "P" :
-					// Checks if randomAssignedWebList is empty
+					// Checks if sortedWebList is empty
 					if(sortedWebList.isEmpty())
 					{
 						System.out.println("You haven't sorted the websites! Enter 'S' to Sort.");	
@@ -342,15 +368,16 @@ public class SearchEngine {
 					else
 					{
 						createPriorityQueue();
-						System.out.println("Done! The Priority Queue is created!");
+						System.out.println("\nDone! The Priority Queue is created!");
 						System.out.println("Here are the 20 websites in the Heap: ");
-						for(WebLink pWeb : webHeap)
+						for(int i = 0; i < webHeap.size(); i++)
 						{
-							System.out.println(pWeb);
+							System.out.println(i+1 + "  "+ webHeap.get(i));
 						}
 					}
 					break;
-					
+				
+				// Insert a new web url link into Heap
 				case "I" :
 					if(webHeap.isEmpty())
 					{
@@ -378,25 +405,17 @@ public class SearchEngine {
 
 						webHeap.add(iW); // add iW to the end of webHeap
 
-					//	getHeap();
-					//	webHeap.clear();
 						webHeap = updateWebHeap();
-						System.out.println("AFTER UPDATED WEBHEAPPPPPPPPPPPPPPPPP");
+						System.out.println("\nHere is the WebList after inserting ");
 
 						for(int i = 0 ; i < webHeap.size(); i++)
 						{
 							System.out.println(i+1 + "  " + webHeap.get(i));
-						}
-						
-						
-						System.out.println("AFTER UPDATED HEAPPPPPPPPPPPPPPPPP");
-						for(int i : heap)
-						{
-							System.out.println(i);
-						}						
+						}				
 					}
 					break;
-					
+				
+				// View the first ranked web url link
 				case "F" :
 					if(webHeap.isEmpty())
 					{
@@ -410,7 +429,7 @@ public class SearchEngine {
 						{
 							if(webHeap.get(i).getTotal() == extractMax)
 							{
-								System.out.println("Here is the First ranked web url link:");
+								System.out.println("\nHere is the First ranked web url link:");
 								System.out.println(webHeap.get(i));
 								removeIndex = i;
 							}
@@ -418,14 +437,15 @@ public class SearchEngine {
 						//remove the first ranked web from the webHeap list
 						webHeap.remove(removeIndex);
 						
-						System.out.println("Here is the WebHeap List after removing the First ranked website");
-						for(WebLink fW : webHeap)
+						System.out.println("\nHere is the WebHeap List after removing the First ranked website");
+						for(int i = 0; i < webHeap.size(); i++)
 						{
-							System.out.println(fW);
+							System.out.println(webHeap.get(i));
 						}				
 					}
 					break;
-					
+				
+				// Choose one of the web url links stored in the heap Priority Queue and increase its PageRank score
 				case "C" :
 					// Get input from user
 					// Get the information of the target website
@@ -437,27 +457,70 @@ public class SearchEngine {
 
 					//find the target index of the Heap
 					int targetIndex = Integer.MIN_VALUE;
+					boolean found = false;
 					for(int i = 0; i < heap.length; i++)
 					{
 						if(heap[i] == currentTotal)
 						{
 							targetIndex = i;
+							found = true;
 						}
 					}	
+					
+					// If there is no such element in the Heap, break!
+					if(found == false)
+					{
+						System.out.println("There is no website with such URL or PageRank!");
+						break;
+					}
 					
 					// Get the NEW scores
 					System.out.print("Enter its NEW score for Frequency (1-100):  ");
 					int nFre = in.nextInt();
+					// Check if the scores are valid
+					while(!(nFre >= 1 && nFre <= 100))
+					{
+						System.out.println("Invalid input! Please enter an INTEGER from 1 to 100!");
+						System.out.print("Enter its NEW score for Frequency (1-100):  ");
+						nFre = in.nextInt();
+					}						
+					
 					System.out.print("Enter its NEW score for Age (1-100):  ");
 					int nAge = in.nextInt();
+					// Check if the scores are valid
+					while(!(nAge >= 1 && nAge <= 100))
+					{
+						System.out.println("Invalid input! Please enter an INTEGER from 1 to 100!");
+						System.out.print("Enter its NEW score for Age (1-100):  ");
+						nAge = in.nextInt();
+					}	
+					
 					System.out.print("Enter its NEW score for Number of other web pages link to the page (1-100):  ");
 					int nNumOfLinks = in.nextInt();
+					// Check if the scores are valid
+					while(!(nNumOfLinks >= 1 && nNumOfLinks <= 100))
+					{
+						System.out.println("Invalid input! Please enter an INTEGER from 1 to 100!");
+						System.out.print("Enter its NEW score for Number of other web pages link to the page (1-100):  ");
+						nNumOfLinks = in.nextInt();
+					}	
+					
 					System.out.print("Enter its NEW score for Money (1-100):  ");
 					int nMoney = in.nextInt();
+					// Check if the scores are valid
+					while(!(nMoney >= 1 && nMoney <= 100))
+					{
+						System.out.println("Invalid input! Please enter an INTEGER from 1 to 100!");
+						System.out.print("Enter its NEW score for Money (1-100):  ");
+						nMoney = in.nextInt();
+					}	
 					
 					in.nextLine(); // skip 1 line
 
 					int newTotal = nFre + nAge + nNumOfLinks + nMoney;
+					
+					System.out.println("\nThe new PageRank score of this website is:  " + newTotal);
+
 					
 					// increases key
 					sorter.HeapIncreaseKey(heap, targetIndex, newTotal);
@@ -483,7 +546,7 @@ public class SearchEngine {
 					// create an empty list
 					ArrayList<WebLink> tempList = new ArrayList<>();
 					
-					System.out.println("Here are the webHeap list after increasing the PageRank score: ");
+					System.out.println("\nHere are the webHeap list after increasing the PageRank score: ");
 					
 					for(int i = 0 ; i < heap.length; i++)
 					{
@@ -509,13 +572,15 @@ public class SearchEngine {
 					}
 					
 					break;
-					
+				
+				// Stop the engine
 				case "Q" :
 					System.out.println("\n****************************************************");
 					System.out.println("Thank you! See you again!");
 	                quit = true;
 	                break;
-	                
+	            
+	            // Invalid input
 				default:
 	                System.out.println("Invalid input! Please try again");
 	                break;
