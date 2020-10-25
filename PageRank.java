@@ -51,8 +51,9 @@ public class PageRank {
 	}
 	
 	/**
-	 * Returns the sum of all four factors
-	 * @return sum of all four factors
+	 * Returns the total score of all four factors 
+	 * @return the total score of all four factors 
+
 	 */
 	public int getTotalScore()
 	{
