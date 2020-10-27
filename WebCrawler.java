@@ -13,6 +13,12 @@ import org.jsoup.select.Elements;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * A Web Crawler using Google Search String, Google BOT with Java jsoup Library
+ * Searches for the keyword on the internet and generates a list of web URL links.
+ * @author Mike Wu
+ *
+ */
 public class WebCrawler {
 
 	private String url;
@@ -31,7 +37,6 @@ public class WebCrawler {
 
 	// Constructor for the WebCrawler object
 	// It saved the keyword that user entered and put it into a google search link
-
 	WebCrawler(String aKeyword) {
 		keyword = aKeyword;
 		url = "https://google.com/search?q=" + aKeyword + "&num=80";
@@ -53,16 +58,24 @@ public class WebCrawler {
 	public String getDomainName(String url) {
 		matcher = patternDomainName.matcher(url);
 		
+		// ** IF WANT FULL URLs WITHOUT GARBAGE
 		// modify the url string for a better format
+		/*		
 		if (url.startsWith("/url?q=https://")) 
 		{
 			return url.substring(15, url.indexOf("&sa="));
-
 		}
 		else
 		{
 			return url.substring(14, 42);
 		}
+		*/
+		
+		// original format
+		if (url.startsWith("/url?q=https://")) {
+			return url.substring(15, 42);
+		}
+		return url.substring(14, 42);
 	}
 
 	// get the set of urls result
@@ -124,4 +137,3 @@ public class WebCrawler {
 		}
 	}
 }//end
-
