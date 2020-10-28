@@ -39,7 +39,7 @@ public class WebLink implements Comparable {
 	}
 	
 	/**
-	 * Return a PageRank's Frequency score of the website
+	 * Gets a PageRank's Frequency score of the website
 	 * @return PageRank's Frequency score
 	 */
 	public int getFrequency()
@@ -48,7 +48,7 @@ public class WebLink implements Comparable {
 	}
 	
 	/**
-	 * Return a PageRank's Age score of the website
+	 * Gets a PageRank's Age score of the website
 	 * @return PageRank's Age score
 	 */
 	public int getAge()
@@ -57,7 +57,7 @@ public class WebLink implements Comparable {
 	}
 	
 	/**
-	 * Return a PageRank's Number of other web pages that link to the page score of the website
+	 * Gets a PageRank's Number of other web pages that link to the page score of the website
 	 * @return PageRank's Number of other web pages that link to the page score score
 	 */
 	public int getOtherWebLinks()
@@ -66,7 +66,7 @@ public class WebLink implements Comparable {
 	}
 	
 	/**
-	 * Return a PageRank's Money score of the website
+	 * Gets a PageRank's Money score of the website
 	 * @return PageRank's Money score
 	 */
 	public int getMoney()
@@ -75,7 +75,7 @@ public class WebLink implements Comparable {
 	}
 	
 	/**
-	 * Return a PageRank's Total score of the website
+	 * Gets a PageRank's Total score of the website
 	 * @return PageRank's Total score
 	 */
 	public int getTotal()
@@ -85,8 +85,18 @@ public class WebLink implements Comparable {
 	
 	/**
 	 * @Override
-	 * Checks if 2 WebLink items have the same the total PageRank score
-	 * @return true if 2 items have the same same the total PageRank score, false otherwise
+	 * Returns a string representation of the WebLink item
+	 * @return a string representation of the WebLink item
+	 */
+	public String toString()
+	{
+		 return getUrl() + " , PageRank score: " + getTotal();		
+	}
+	
+	/**
+	 * @Override
+	 * Checks if 2 WebLink items have the same total PageRank score and URL
+	 * @return true if 2 items have the same total PageRank score and URL, false otherwise
 	 */
 	public boolean equals(Object otherObject)
 	{
@@ -100,23 +110,31 @@ public class WebLink implements Comparable {
 		}
 		
 		WebLink other = (WebLink)otherObject;
-		return (this.pRank.getTotalScore() == other.pRank.getTotalScore());
+		return (this.getTotal() == other.getTotal() && this.url.equals(other.url));
 	}
 	
 	/**
 	 * @Override
-	 * Compares the to-do item by the total PageRank score
+	 * Compares two WebLink objects by the PageRank total score first
+	 * If PageRank total scores are equal, compare the URL
 	 * @return the difference of the 2 items
 	 */
 	public int compareTo(Object otherObject)
 	{
 		WebLink other = (WebLink) otherObject;
-		return Double.compare(this.pRank.getTotalScore(), other.pRank.getTotalScore());
+		if(this.getTotal() == other.getTotal())
+    	{
+    	          return this.url.compareTo(other.url);//compare String
+    	}
+    	else
+    	{
+    	         return Double.compare(this.getTotal(), other.getTotal());//compare num
+    	}
 	}
 	
 	/**
 	 * @Override
-	 * Generate the hash code for a WebLink items
+	 * Generates the hash code for a WebLink items
 	 * @return the hash code 
 	 */
 	public int hashCode() 
